@@ -1,0 +1,40 @@
+name: "ci-cd"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    name: "Build"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: "Build Project"
+        run: |
+          echo "Run build scripts/tool"
+
+      - name: "Lint Project"
+        run: |
+          echo "Run linting script/tool"
+
+      - name: "Test Project"
+        run: |
+          echo "Run unit tests"
+
+  deploy:
+    name: "Deploy"
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: [build]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: "Deploy Project"
+      run: |
+        echo "Deploy project"
